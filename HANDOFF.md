@@ -58,8 +58,19 @@ Geometry was verified by measurement, not by eye. Do not re-derive it.
    is authoritative for gift copy and the deck's section 01 lines were gift
    IDEATION, not website copy. The landing copy in the speaker notes was diffed
    against `config.js` and matches exactly. Nothing to change.
-4. **Notifier** still points at the Jonny deployment, which emails details@ and
-   Sarah on every real POST. Repoint before anything is submitted.
+4. **Notifier: deployed, awaiting ONE click from Waheed.** New project
+   `apps-script-backups/stephanie-miller-claim-notifier`, deployment
+   `AKfycbxGjdsl...VdIDTpeSdwQ` @1. The site now points at it, and no trace of
+   the Jonny endpoint remains. It returns 403 until the owner opens the project
+   in the Apps Script editor, runs any function, and approves Review permissions.
+   Recipients are `details@` only. Add Kharisel for testing and Calvin at go-live
+   (Calvin Sribniak-Jones, navigate@pixeldreams.com per the kickoff notes; NOT
+   added without being asked). Test with GET only, since a real POST emails a fake
+   claim to every recipient. Redeploy with `clasp deploy -i <id>` to keep the URL.
+   Gotchas: `clasp create` overwrites appsscript.json with a default that drops
+   the `webapp` block (restore from git and re-push before deploying), and
+   `clasp pull` writes a duplicate Code.js beside Code.gs that breaks the next
+   push (delete it).
 5. **No remote yet.** Needs a GitHub repo and Pages.
 
 ## Conventions worth keeping

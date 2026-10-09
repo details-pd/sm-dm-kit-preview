@@ -217,11 +217,15 @@ const KIT = {
   ],
 
   notifier: {
-    // PHASE 0 / TODO: still the JONNY deployment, which emails details@ and
-    // Sarah on every real POST. Must be repointed at a new deployment with
-    // Calvin on the recipients BEFORE anything is submitted from this site.
+    // Stephanie's own deployment (apps-script-backups/stephanie-miller-claim-
+    // notifier), recipients details@ only until go-live. It replaced the Jonny
+    // endpoint, which emails Sarah on every real POST.
+    //
+    // It returns 403 until the owner approves the one-time permission prompt in
+    // the Apps Script editor (Run any function, Review permissions, Allow).
+    // Until then a submit fails safely with copy.formFailed.
     endpoint:
-      "https://script.google.com/macros/s/AKfycbzlAoT1Me_uVJ1aaQ0XFCjO7a_a5NtdeF32CpvJkaZ5uyEaiXJ-YZTEsBQRbJ5E4X4-WQ/exec",
+      "https://script.google.com/macros/s/AKfycbxGjdslx36wRe0vxyddtk_6udgaJVauqAib4VbpZtgwqVBZn_-YyDlaVuJVcIDTpeSdwQ/exec",
   },
 
   // play-zoom framing: a milestone card aims for ~cardHeight of the
