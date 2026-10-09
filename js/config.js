@@ -178,41 +178,37 @@ const KIT = {
   ],
 
   // Gift options. Names are final (Kharisel's Oct 9 artboards 4 and 5).
-  //
-  // PHASE 3 / TODO: `back` and `front` still point at the JONNY art. The
-  // racing cards are on artboards 4 and 5 of
-  // PD-Stephanie-Miller-Baby-DM-Kit-Design-Assets.ai and need running
-  // through tools/extract-gift-cards.py. Kharisel also flagged that The Next
-  // Lap's front may be re-exported once the actual gift is locked.
-  //
-  // COPY CONFLICT, unresolved as of Oct 9: the descriptions below are the
-  // ones baked into the design, but two of them are Jonny's wording verbatim
-  // and the creative deck has different new copy. Descriptions are live text
-  // (the art carries no baked copy since v5), so whichever wins is a one-line
-  // change here. Awaiting Kharisel.
+  // Card art was extracted with tools/extract-gift-cards.py: chrome and buttons
+  // are baked into the art and the whole card is the click target. The
+  // descriptions are live text, so the fronts have them painted out of the
+  // white band (assets/v5), which is what lets the copy change without a
+  // re-export. Copy is as designed in the .ai; per Kharisel, the .ai is
+  // authoritative for gift copy and the deck's section 01 was ideation only.
+  // Kharisel flagged that The Next Lap's front may be re-exported once the
+  // actual gift is locked: re-run the extractor and bump ?v= on that file.
   gifts: [
     {
       name: "The Next Lap",
-      back: "assets/v3/gift-rookie-back.png?v=1",
-      front: "assets/v5/gift-rookie-front.png?v=1",
+      back: "assets/v3/gift-nextlap-back.png?v=1",
+      front: "assets/v5/gift-nextlap-front.png?v=1",
       backAlt: "Face-down gift card with a race car sticker — flip to reveal",
-      desc: "A collection of race-day<br>baby essentials to welcome<br>the newest little racer.",
+      desc: "A collection of race\u2011day<br>baby essentials to welcome<br>the newest little racer.",
       frontAlt:
         "The Next Lap — a collection of race-day baby essentials to welcome the newest little racer. Click to choose this gift.",
     },
     {
       name: "Memory Lane",
-      back: "assets/v3/gift-highlight-back.png?v=1",
-      front: "assets/v5/gift-highlight-front.png?v=1",
-      backAlt: "Face-down gift card with a keepsake-book sticker — flip to reveal",
+      back: "assets/v3/gift-memorylane-back.png?v=1",
+      front: "assets/v5/gift-memorylane-front.png?v=1",
+      backAlt: "Face-down gift card with a memory-book sticker — flip to reveal",
       desc: "Items to help preserve<br>the little moments as<br>they unfold.",
       frontAlt:
         "Memory Lane — items to help preserve the little moments as they unfold. Click to choose this gift.",
     },
     {
       name: "The Pit Stop",
-      back: "assets/v3/gift-sixthman-back.png?v=1",
-      front: "assets/v5/gift-sixthman-front.png?v=1",
+      back: "assets/v3/gift-pitstop-back.png?v=1",
+      front: "assets/v5/gift-pitstop-front.png?v=1",
       backAlt: "Face-down gift card with a serving-dish sticker — flip to reveal",
       desc: "Chef-made meals, delivered<br>to the door. Pick the meals,<br>choose a date, and you’re set.",
       frontAlt:

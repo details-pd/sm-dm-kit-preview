@@ -44,9 +44,15 @@ Geometry was verified by measurement, not by eye. Do not re-derive it.
    the binding constraint is the group's HEIGHT, not its width. Jonny's shipped
    positions sat ~520px from their card centres, so that distance is normal.
    Needs Kharisel's placement call for a family of four.
-2. **Gift card art** still points at the Jonny files. Artboards 4 and 5 need
-   running through `tools/extract-gift-cards.py`. Kharisel says The Next Lap's
-   front may be re-exported once the gift is locked.
+2. ~~Gift card art.~~ **DONE Oct 9.** Extracted from artboards 4 and 5 with
+   `tools/extract-gift-cards.py`, which is now parameterized: it used to have its
+   output path hardcoded to the JONNY repo and would have overwritten his art.
+   Usage: `python3 tools/extract-gift-cards.py backs.png fronts.png out-dir`
+   with both artboards rendered at `pdftoppm -r 144`. Fronts get the description
+   text painted out of the white band (assets/v5), because the copy is live text.
+   Verified: 0 pixels changed outside the erase box, 0 text left inside, 0 holes.
+   Kharisel says The Next Lap's front may be re-exported once the gift is locked;
+   re-run the extractor and bump `?v=` on that one file.
 3. ~~Gift descriptions.~~ **RESOLVED Oct 9.** Kharisel: slide 11's copy is in
    the deck's speaker notes, slide 12's is in the Illustrator file. So the .ai
    is authoritative for gift copy and the deck's section 01 lines were gift

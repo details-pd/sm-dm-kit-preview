@@ -1,10 +1,21 @@
 #!/usr/bin/env python3
 """Lift the 3 gift cards (with baked chrome + buttons) off the dark dimmed
-backdrop of artboards 4 (backs) and 5 (fronts) as transparent PNGs."""
+backdrop of artboards 4 (backs) and 5 (fronts) as transparent PNGs.
+
+    python3 tools/extract-gift-cards.py backs.png fronts.png out-dir
+
+Fronts also get their description text painted out of the white band (see
+erase_description), because the descriptions are live text in config.js.
+
+The output dir used to be hardcoded to the Jonny Fruits repo, so running this
+from the Stephanie fork would have overwritten his gift art. It is an argument
+now and has no default for that reason."""
 import os
+import sys
 from PIL import Image
 
-OUT = "/Users/details/apps-script-backups/jonny-fruits-dm-kit/assets/v3"
+BACKS, FRONTS, OUT = sys.argv[1], sys.argv[2], sys.argv[3]
+os.makedirs(OUT, exist_ok=True)
 DARK = 60   # blurred-luminance backdrop ceiling
 SHADOW = 0    # shave disabled: remnant shadow reads correctly on the dim backdrop
 
@@ -66,7 +77,24 @@ def find_cards(path):
     boxes.sort(key=lambda b: b[0])  # left -> right
     return im, boxes
 
-def cut(im, box, out_name):
+# The description band on a front is flat white, with three lines of text that
+# sit y 0.696-0.824 of the card, between the art (ends 0.655) and the button
+# (starts 0.868). Measured on all three Stephanie fronts, Oct 9: the band had
+# zero non-white pixels outside the text, and the text stayed 107px or more
+# inside the card edges, so painting a box white is exact and cannot touch the
+# art, the button or the card edge.
+BAND = (0.06, 0.6755, 0.94, 0.846)   # x0, y0, x1, y1 as fractions of the card
+
+def erase_description(rgba):
+    w, h = rgba.size
+    x0, y0, x1, y1 = (int(BAND[0]*w), int(BAND[1]*h), int(BAND[2]*w), int(BAND[3]*h))
+    px = rgba.load()
+    for y in range(y0, y1):
+        for x in range(x0, x1):
+            if px[x, y][3] > 0:
+                px[x, y] = (255, 255, 255, px[x, y][3])
+
+def cut(im, box, out_name, erase=False):
     """Full-res flood fill from crop edges over DARK NEIGHBORHOODS.
     Using box-blurred luminance (radius 3) instead of per-pixel values means
     the flood cannot squeeze through thin dark outlines (their neighborhoods
@@ -165,6 +193,8 @@ def cut(im, box, out_name):
     rgba.putalpha(Image.frombytes("L", (w, h), bytes(255 - 255 * b for b in bg)))
     # trim to opaque bbox
     rgba = rgba.crop(rgba.getchannel("A").getbbox())
+    if erase:
+        erase_description(rgba)
     rgba.save(os.path.join(OUT, out_name))
     # sanity: the central card area must be solid (no see-through holes)
     cw, ch = rgba.size
@@ -172,8 +202,8 @@ def cut(im, box, out_name):
     holes = sum(1 for a in core.getdata() if a < 128) / (core.size[0] * core.size[1])
     print(out_name, rgba.size, f"core-holes={holes:.4%}")
 
-names = ["rookie", "highlight", "sixthman"]
-for page, kind in (("d3backs-4.png", "back"), ("d3fronts-5.png", "front")):
+names = ["nextlap", "memorylane", "pitstop"]
+for page, kind in ((BACKS, "back"), (FRONTS, "front")):
     im, boxes = find_cards(page)
     for box, n in zip(boxes, names):
-        cut(im, box, f"gift-{n}-{kind}.png")
+        cut(im, box, f"gift-{n}-{kind}.png", erase=(kind == "front"))
