@@ -1,0 +1,529 @@
+/* =========================================================
+   Jonny Fruits Baby DM Kit — v3 styles (Aug 13 board)
+   Cream sticker-collage board, camera-driven stage.
+   ========================================================= */
+
+:root {
+  --yellow: #f2b21b;
+  --cream: #fdf8dd;   /* board background cream */
+  --blue: #1f4fd8;    /* deck / card-back blue */
+  --blue-dark: #00072a;
+  --cyan: #35c7f5;    /* letter-card border (landing/form/thanks) */
+  --red: #ff3300;     /* button red (Kharisel, Aug 14) */
+  --green: #17a35c;
+  --ink: #14110a;
+  --gold: #ffd76a;
+  --dim: rgba(5, 7, 22, 0.62);  /* popup + overlay backdrop */
+  --shadow: 0 10px 30px rgba(5, 7, 22, 0.3);
+  --card-w: clamp(210px, min(30vw, 44vh), 340px);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { height: 100%; }
+body {
+  height: 100%;
+  font-family: "Roboto", "Avenir Next", system-ui, sans-serif;
+  color: var(--ink);
+  background: #381d10; /* wooden-table brown (Kharisel, Aug 14) */
+  overflow: hidden;    /* the camera moves, the page never scrolls */
+}
+
+/* headings match the .ai's embedded Bricolage Grotesque ExtraBold —
+   normal width, no condensing */
+h1, h2, h3, h4, .btn {
+  font-family: "Bricolage Grotesque", "Roboto", system-ui, sans-serif;
+  font-weight: 800;
+}
+
+.btn {
+  font-weight: 700;
+  font-size: 1rem;
+  border: 3px solid var(--ink);
+  border-radius: 999px;
+  padding: 0.8em 1.8em;
+  cursor: pointer;
+  transition: transform 120ms ease, box-shadow 120ms ease;
+  box-shadow: 0 4px 0 var(--ink);
+}
+.btn:hover  { transform: translateY(-2px); box-shadow: 0 6px 0 var(--ink); }
+.btn:active { transform: translateY(2px);  box-shadow: 0 2px 0 var(--ink); }
+.btn-primary   { background: var(--red);   color: #fff; }
+.btn-secondary { background: var(--green); color: #fff; }
+.btn-wide      { width: 100%; }
+
+/* ============ intro: letter card over the dimmed board ============ */
+.intro-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  background: var(--dim); /* board shows through, dimmed */
+  padding: 4vh 4vw;
+}
+.intro-card {
+  position: relative;
+  width: min(560px, 92vw); /* wider, to unwiden the copy (Kharisel) */
+  background: #fff;
+  border: 9px solid var(--cyan);
+  border-radius: 26px;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
+  padding: clamp(1.6rem, 4vw, 2.4rem) clamp(1.6rem, 4vw, 2.4rem) clamp(2.2rem, 5vw, 3rem);
+  text-align: left;
+}
+.intro-card h1 {
+  font-weight: 800;
+  font-size: clamp(1.7rem, 5vh, 2.5rem);
+  line-height: 1.05;
+  color: var(--ink);
+  margin-bottom: 0.7em;
+}
+.intro-body {
+  max-height: calc(76vh - 190px);
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+.intro-body::-webkit-scrollbar { width: 4px; }
+.intro-body::-webkit-scrollbar-thumb { background: rgba(0, 0, 0, 0.18); border-radius: 4px; }
+.intro-body p {
+  font-weight: 400; /* Roboto Regular, per the design */
+  font-size: clamp(0.85rem, 2.1vh, 1rem);
+  line-height: 1.5;
+  color: #16130c;
+  margin-bottom: 0.95em;
+}
+/* the CTA sits in the letter flow, left-aligned, standard button style
+   (consistent with Submit — Kharisel) */
+.intro-cta {
+  display: inline-block;
+  margin-top: 0.5rem;
+}
+/* sparkle stickers (star extracted from the .ai; the white sticker outline
+   is drawn here with stacked drop-shadows rather than baked into the PNG) */
+.sparkle {
+  position: absolute;
+  width: clamp(28px, 4.5vh, 44px);
+  height: auto;
+  filter:
+    drop-shadow(1.5px 0 0 #fff) drop-shadow(-1.5px 0 0 #fff)
+    drop-shadow(0 1.5px 0 #fff) drop-shadow(0 -1.5px 0 #fff)
+    drop-shadow(0 3px 4px rgba(0, 0, 0, 0.3));
+}
+.sp-1 { top: -30px; right: 56px; animation: twinkle-1 4.2s ease-in-out infinite; }
+.sp-2 { top: 10px; right: -26px; width: clamp(22px, 3.5vh, 34px); animation: twinkle-2 5.1s ease-in-out infinite 0.4s; }
+.sp-3 { left: -28px; top: 46%; width: clamp(20px, 3.2vh, 30px); animation: twinkle-3 4.7s ease-in-out infinite 0.9s; }
+
+/* Sarah, Aug 19: the stars only popped in on load and "nobody refreshes" —
+   so they drift and twinkle for as long as the letter is up. Each has its
+   own period and base rotation so they never move in lockstep. */
+@keyframes twinkle-1 {
+  0%, 100% { transform: translateY(0)     rotate(0deg)   scale(1);    opacity: 1; }
+  50%      { transform: translateY(-7px)  rotate(14deg)  scale(1.12); opacity: 0.86; }
+}
+@keyframes twinkle-2 {
+  0%, 100% { transform: translateY(0)     rotate(18deg)  scale(1);    opacity: 0.92; }
+  50%      { transform: translateY(6px)   rotate(4deg)   scale(1.16); opacity: 1; }
+}
+@keyframes twinkle-3 {
+  0%, 100% { transform: translateY(0)     rotate(-12deg) scale(1);    opacity: 1; }
+  50%      { transform: translateY(-5px)  rotate(-26deg) scale(0.9);  opacity: 0.8; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sp-1, .sp-2, .sp-3 { animation: none; }
+  .sp-2 { transform: rotate(18deg); }
+  .sp-3 { transform: rotate(-12deg); }
+}
+
+/* ============ stage + board (camera-driven) ============ */
+.stage {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  visibility: hidden; /* revealed by JS after unboxing */
+  touch-action: none; /* gestures are handled by the camera */
+}
+.board {
+  position: absolute;
+  left: 0; top: 0;
+  transform-origin: 0 0;
+  will-change: transform;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+
+/* milestone slots: DOM overlays sized/rotated to the measured baked
+   card art. Three stacked layers — the year card, the "Click me" card
+   that replaces it when this milestone is next up (Aug 19), and the
+   milestone face that the card turns over to reveal. */
+.slot { position: absolute; z-index: 3; }
+.slot img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+/* only this wrapper turns; .slot-plate behind it never moves */
+.slot-turn { position: absolute; inset: 0; }
+/* pulses around the card whose turn it is — the shake alone wasn't reading
+   as "your move" (Sarah, Aug 20) */
+.slot-halo {
+  position: absolute;
+  inset: -3%;
+  border-radius: 9%;
+  opacity: 0;
+  pointer-events: none;
+  box-shadow:
+    0 0 0 9px rgba(255, 215, 106, 0.9),
+    0 0 38px 16px rgba(255, 176, 32, 0.6);
+}
+.slot-click, .slot-face { opacity: 0; }
+/* deliberately no transition on these swaps: the year → "Click me" change
+   is announced by the shake, and the swap to the milestone face happens
+   while the card is side-on. A transition would also stall mid-fade on a
+   backgrounded tab, leaving the wrong card face up. */
+.slot.inviting .slot-click { opacity: 1; }
+.slot.filled .slot-face { opacity: 1; }
+.slot.filled .slot-year, .slot.filled .slot-click { opacity: 0; }
+/* the deck is gone: the cards themselves are what you click */
+.slot.inviting, .slot.filled { cursor: pointer; }
+.slot.inviting:focus-visible, .slot.filled:focus-visible {
+  outline: 4px solid var(--blue);
+  outline-offset: 6px;
+  border-radius: 10px;
+}
+
+/* Gift-card description. Baked into Kharisel's art originally; erased from
+   the raster and set as live text so the copy can change (Sarah, Aug 20).
+   Geometry measured off the original: the text block sat between 69.9% and
+   81.6% of the card height, x 10.8%–88.6%, with a 4.46% line pitch. */
+.gf-desc {
+  position: absolute;
+  left: 10.5%;
+  right: 10.5%;
+  top: 69.2%;
+  margin: 0;
+  text-align: center;
+  font-family: "Roboto", system-ui, sans-serif;
+  font-weight: 700;
+  color: #000;
+  font-size: 0.72rem; /* replaced by sizeGiftDesc() */
+  line-height: 1.17;
+  letter-spacing: -0.005em;
+}
+
+/* "Start the Journey" — Kharisel's artwork, lifted out of the board so it
+   can sit clear of the couple and fade once they set off */
+.start-label {
+  position: absolute;
+  z-index: 5;
+  height: auto;
+  pointer-events: none;
+}
+
+/* the final blue piece: pulses once the last milestone is turned. The
+   "Click for a surprise" pill under it is painted into the board art. */
+.surprise-glow {
+  position: absolute;
+  z-index: 2;
+  border-radius: 999px;
+  opacity: 0;
+  pointer-events: none;
+  background: transparent; /* never tint the pill underneath */
+  box-shadow:
+    0 0 0 10px rgba(255, 215, 106, 0.85),
+    0 0 46px 18px rgba(255, 176, 32, 0.75);
+}
+.surprise-hit {
+  position: absolute;
+  z-index: 6;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  display: none;
+  cursor: pointer;
+  border-radius: 999px;
+}
+.surprise-hit.on { display: block; }
+.surprise-hit:focus-visible { outline: 4px solid var(--blue); outline-offset: 4px; }
+
+/* pawns: sticker heads, feet anchored on the track by JS. left/top are
+   pinned at 0 and the anchor comes from a transform, so a walk never
+   triggers layout. */
+.pawn {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 4;
+  height: auto;
+  will-change: transform;
+  transform-origin: 50% 100%;
+  pointer-events: none;
+  filter: drop-shadow(0 6px 8px rgba(5, 7, 22, 0.28));
+}
+
+/* (the viewport-pinned deck was removed Aug 19 — the board cards are the
+   click targets now, which also frees the right rail so the board can be
+   framed larger) */
+
+/* ============ card reveal popup ============ */
+.reveal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  display: none;
+  place-items: center;
+  background: var(--dim); /* dimmed backdrop, board visible behind */
+}
+/* draw flight: the same card element, but no dim and click-through */
+.reveal-overlay.fly-mode {
+  background: transparent;
+  pointer-events: none;
+}
+.reveal-card {
+  position: relative;
+  width: var(--card-w);
+  aspect-ratio: 764 / 996; /* face exports' ratio */
+  perspective: 1200px;
+}
+.reveal-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+}
+.reveal-face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+}
+.reveal-back {
+  transform: rotateY(0deg);
+  background: url("../assets/v3/card-back.png?v=2") center / contain no-repeat;
+  filter: drop-shadow(var(--shadow));
+}
+.reveal-front { transform: rotateY(180deg); }
+.reveal-front img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(var(--shadow));
+}
+/* X close — returns to the board (Sarah's exit UI, Aug 13) */
+.reveal-close {
+  position: absolute;
+  top: -14px;
+  right: -14px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 3px solid var(--ink);
+  background: var(--cream);
+  color: var(--ink);
+  font-size: 1.15rem;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 3px 0 var(--ink);
+  opacity: 0;
+  z-index: 2;
+}
+.reveal-close:hover { background: #fff; }
+
+/* ============ gift selection (dim aesthetic, Aug 13) ============ */
+.giftselect-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 84;
+  display: none;
+  background: rgba(4, 6, 16, 0.86); /* heavier dim than popups, per design */
+  padding: 3vh 3vw;
+  overflow-y: auto; /* cards stack taller than the screen on phones */
+}
+.giftselect-stage { margin: auto; }
+/* exit back to the board (before a gift is chosen) */
+.gift-close {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 3px solid var(--ink);
+  background: var(--cream);
+  color: var(--ink);
+  font-size: 1.15rem;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 3px 0 var(--ink);
+  z-index: 2;
+}
+.gift-close:hover { background: #fff; }
+.giftselect-title {
+  color: #fff;
+  font-size: clamp(1.5rem, 4vw, 2.8rem);
+  text-align: center;
+}
+.giftselect-sub {
+  text-align: center;
+  font-weight: 500;
+  color: #fff;
+  opacity: 0.95;
+  font-size: clamp(0.85rem, 1.5vw, 1.1rem);
+  margin: 0.4em 0 1.6em;
+}
+.gift-flip-row {
+  display: flex;
+  gap: clamp(0.8rem, 2.5vw, 2rem);
+  justify-content: center;
+  align-items: stretch;
+  flex-wrap: wrap;
+}
+/* card chrome (white border, pill button) is baked into the artwork;
+   the whole card is one click target */
+.gift-flip {
+  width: clamp(190px, min(24vw, 40vh), 400px);
+  aspect-ratio: 801 / 1118; /* the exported card art's ratio */
+  perspective: 1100px;
+  cursor: pointer;
+}
+.gift-flip:focus-visible { outline: 4px solid var(--gold); outline-offset: 4px; border-radius: 16px; }
+.gift-flip-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 450ms cubic-bezier(0.4, 0.1, 0.2, 1);
+}
+.gift-flip.flipped .gift-flip-inner { transform: rotateY(180deg); }
+.gf-face {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  backface-visibility: hidden;
+  filter: drop-shadow(0 10px 22px rgba(0, 0, 0, 0.35));
+}
+.gf-face-down { transform: rotateY(0deg); }
+.gf-face-up   { transform: rotateY(180deg); filter: none; }
+.gf-face-up img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 10px 22px rgba(0, 0, 0, 0.35));
+}
+.gift-flip.disabled {
+  pointer-events: none;
+  filter: grayscale(0.7);
+  opacity: 0.45;
+}
+/* glow goes on the face IMAGE, never on .gift-flip-inner — a filter there
+   flattens preserve-3d and renders the front face mirrored */
+.gift-flip.chosen .gf-face-up {
+  filter: drop-shadow(0 10px 22px rgba(0, 0, 0, 0.35))
+          drop-shadow(0 0 20px rgba(255, 215, 106, 0.9));
+}
+
+/* ============ form ============ */
+.form-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 85;
+  display: none;
+  place-items: center;
+  background: var(--dim);
+  padding: 4vh 4vw;
+}
+/* same letter-card treatment as the landing (Kharisel, Aug 14 Slack) */
+.form-frame {
+  width: min(520px, 94vw);
+  max-height: 88vh;
+  background: #fff;
+  border: 9px solid var(--cyan);
+  border-radius: 26px;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
+  display: flex;
+}
+.form-scroll {
+  overflow-y: auto;
+  padding: clamp(1.2rem, 3.5vw, 2.2rem);
+  width: 100%;
+}
+.form-title {
+  color: var(--blue-dark);
+  font-size: clamp(1.3rem, 3vw, 1.8rem);
+  margin-bottom: 1em;
+  text-align: center;
+}
+.form-gift-line {
+  text-align: center;
+  font-weight: 600;
+  margin-bottom: 1.4rem;
+}
+.form-gift-line strong { color: var(--blue-dark); }
+.link-btn {
+  display: block; /* sits on its own line under the gift choice */
+  margin: 0.45em auto 0;
+  background: none;
+  border: none;
+  font: inherit;
+  font-size: 0.85em;
+  font-weight: 700;
+  color: var(--red);
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0;
+}
+/* Submit: centered, natural width instead of full-bleed */
+.btn-submit {
+  display: block;
+  margin: 0.4rem auto 0;
+  min-width: 45%;
+}
+.field { margin-bottom: 1rem; }
+.field label { display: block; font-weight: 700; margin-bottom: 0.3em; }
+.field input,
+.field textarea {
+  width: 100%;
+  font: inherit;
+  font-size: max(16px, 1rem); /* 16px+ stops iOS from zooming the page on focus */
+  border: 3px solid var(--ink);
+  border-radius: 10px;
+  padding: 0.6em 0.8em;
+  background: #fff;
+}
+.field input:focus,
+.field textarea:focus { outline: 3px solid var(--blue); }
+.form-error { color: var(--red); font-weight: 700; min-height: 1.4em; margin-bottom: 0.6em; }
+
+/* ============ thanks ============ */
+.thanks-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 95;
+  display: none;
+  place-items: center;
+  background: var(--dim);
+}
+.thanks-card {
+  width: min(520px, 90vw);
+  background: #fff;
+  border: 9px solid var(--cyan);
+  border-radius: 26px;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
+  padding: clamp(1.8rem, 5vw, 3rem);
+  text-align: center;
+}
+.thanks-card h3 { color: var(--blue-dark); font-size: clamp(1.2rem, 3vw, 1.7rem); margin-bottom: 0.6em; }
+.thanks-card p  { margin-bottom: 1.6em; font-weight: 600; }
+
+/* ============ small screens ============ */
+@media (max-width: 700px) {
+  /* bottom-left keeps the deck clear of the thumb zone (JS sets width) */
+  .deck-area { left: 3%; right: auto; bottom: 3%; }
+  .reveal-close { top: -10px; right: -10px; width: 40px; height: 40px; }
+  .gift-flip { width: min(78vw, 340px); }
+}

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Congratulations, Jonny and Kelly!</title>
+  <!-- Pixel Dreams favicon, from pixeldreams.com -->
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- fonts embedded in Kharisel's .ai (via pdffonts): Bricolage Grotesque
+       ExtraBold for headings, Roboto Regular for body copy -->
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@10..48,800&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css?v=22">
+</head>
+<body>
+
+  <!-- ============ INTRO: letter card over the dimmed board ============
+       Kharisel's Aug 14 landing — the box/unboxing concept was dropped
+       (copy too long for that orientation). Copy comes from config. -->
+  <section id="intro" class="intro-overlay">
+    <div class="intro-card" id="introCard">
+      <img class="sparkle sp-1" src="assets/v3/sparkle.png?v=2" alt="">
+      <img class="sparkle sp-2" src="assets/v3/sparkle.png?v=2" alt="">
+      <img class="sparkle sp-3" src="assets/v3/sparkle.png?v=2" alt="">
+      <h1 id="introHeadline"></h1>
+      <div class="intro-body" id="introBody"></div>
+      <button class="btn btn-primary intro-cta" id="celebrateBtn"></button>
+    </div>
+  </section>
+
+  <!-- ============ STAGE: fixed camera viewport over the board ============
+       The board (background art + slots + pawns) is built by main.js
+       from KIT config; the camera moves the board inside this stage. -->
+  <div id="stage" class="stage" aria-label="Game board">
+    <div id="board" class="board">
+      <!-- lifted out of the board art so it can sit clear of the couple
+           and fade away once they set off (see config board.startLabel) -->
+      <img id="startLabel" class="start-label" src="" alt="">
+      <!-- the last blue piece: pulses and becomes clickable after the
+           final milestone; the pill itself is painted into the board -->
+      <div id="surpriseGlow" class="surprise-glow"></div>
+      <button id="surpriseHit" class="surprise-hit" type="button"></button>
+    </div>
+  </div>
+
+  <!-- ============ CARD REVEAL POPUP (dimmed backdrop + X close) ============ -->
+  <section id="reveal" class="reveal-overlay" aria-live="polite">
+    <div class="reveal-card" id="revealCard">
+      <div class="reveal-inner" id="revealInner">
+        <div class="reveal-face reveal-back"></div>
+        <div class="reveal-face reveal-front">
+          <img id="revealImg" src="" alt="">
+        </div>
+      </div>
+      <button class="reveal-close" id="revealClose" aria-label="Back to the board">✕</button>
+    </div>
+  </section>
+
+  <!-- ============ GIFT SELECTION (flip cards, built from config) ============ -->
+  <section id="giftSelect" class="giftselect-overlay">
+    <button class="gift-close" id="giftClose" aria-label="Back to the board">✕</button>
+    <div class="giftselect-stage">
+      <h3 class="giftselect-title" id="giftTitle"></h3>
+      <p class="giftselect-sub" id="giftSub"></p>
+      <div class="gift-flip-row" id="giftRow"></div>
+    </div>
+  </section>
+
+  <!-- ============ ADDRESS FORM ============ -->
+  <section id="form" class="form-overlay">
+    <div class="form-frame">
+      <div class="form-scroll">
+        <h3 class="form-title" id="formTitle"></h3>
+        <p class="form-gift-line" id="formGiftLead">&nbsp;<strong id="chosenGiftLabel"></strong>
+          <button type="button" class="link-btn" id="changeGiftBtn"></button></p>
+
+        <form id="claimForm" novalidate>
+          <!-- no Name field: the recipient is fixed by config -->
+          <div class="field">
+            <label for="fPhone" id="fPhoneLabel"></label>
+            <input id="fPhone" name="phone" type="tel" autocomplete="tel" required>
+          </div>
+          <div class="field">
+            <label for="fAddress" id="fAddressLabel"></label>
+            <textarea id="fAddress" name="address" rows="3" autocomplete="street-address" required></textarea>
+          </div>
+          <div class="field">
+            <label for="fInstructions" id="fInstructionsLabel"></label>
+            <textarea id="fInstructions" name="instructions" rows="2"></textarea>
+          </div>
+          <p class="form-error" id="formError" role="alert"></p>
+          <button type="submit" class="btn btn-primary btn-submit" id="submitBtn"></button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ THANK YOU ============ -->
+  <section id="thanks" class="thanks-overlay">
+    <div class="thanks-card">
+      <h3 id="thanksTitle"></h3>
+      <p id="thanksBody"></p>
+      <button class="btn btn-primary" id="exploreBtn"></button>
+    </div>
+  </section>
+
+  <script src="js/vendor/gsap.min.js"></script>
+  <script src="js/config.js?v=25"></script>
+  <script src="js/main.js?v=34"></script>
+</body>
+</html>

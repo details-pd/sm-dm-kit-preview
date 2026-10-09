@@ -1,0 +1,150 @@
+{
+ "rows": [
+  5,
+  4,
+  2
+ ],
+ "pieces": {
+  "year-2018": {
+   "size": [
+    764,
+    988
+   ]
+  },
+  "year-2021": {
+   "size": [
+    764,
+    988
+   ]
+  },
+  "year-2022": {
+   "size": [
+    764,
+    988
+   ]
+  },
+  "year-2026": {
+   "size": [
+    764,
+    988
+   ]
+  },
+  "card-back": {
+   "size": [
+    764,
+    988
+   ]
+  },
+  "face-founding": {
+   "size": [
+    764,
+    996
+   ]
+  },
+  "face-contract": {
+   "size": [
+    756,
+    996
+   ]
+  },
+  "face-signing": {
+   "size": [
+    764,
+    996
+   ]
+  },
+  "face-henry": {
+   "size": [
+    764,
+    996
+   ]
+  },
+  "head-jonny": {
+   "size": [
+    516,
+    644
+   ]
+  },
+  "head-kelly": {
+   "size": [
+    620,
+    724
+   ]
+  }
+ },
+ "bg_color": [
+  253,
+  248,
+  221
+ ],
+ "slots": {
+  "founding": {
+   "n_px": 17107,
+   "header_center_px": [
+    893.9911504424775,
+    1579.8672566371674
+   ],
+   "angle_deg": -3.81,
+   "header_w_px": 713.6,
+   "header_h_px": 662.3,
+   "center_frac": [
+    0.2338,
+    0.2565
+   ],
+   "card_w_frac": 0.1977,
+   "card_h_frac": 0.1533,
+   "scale": 1.0029
+  },
+  "contract": {
+   "n_px": 17877,
+   "header_center_px": [
+    2586.517409986665,
+    2505.2855237813014
+   ],
+   "angle_deg": -3.49,
+   "header_w_px": 713.2,
+   "header_h_px": 662.9,
+   "center_frac": [
+    0.6698,
+    0.3986
+   ],
+   "card_w_frac": 0.1956,
+   "card_h_frac": 0.1533,
+   "scale": 1.003
+  },
+  "signing": {
+   "n_px": 15075,
+   "header_center_px": [
+    1191.4238473767887,
+    3955.245151033387
+   ],
+   "angle_deg": -3.07,
+   "header_w_px": 713.7,
+   "header_h_px": 662.7,
+   "center_frac": [
+    0.3092,
+    0.6211
+   ],
+   "card_w_frac": 0.1977,
+   "card_h_frac": 0.1533,
+   "scale": 1.0032
+  },
+  "henry": {
+   "n_px": 20974,
+   "header_center_px": [
+    2442.876423779061,
+    5384.709158995163
+   ],
+   "angle_deg": 3.54,
+   "header_w_px": 713.7,
+   "header_h_px": 662.7,
+   "center_frac": [
+    0.6298,
+    0.8406
+   ],
+   "card_w_frac": 0.1977,
+   "card_h_frac": 0.1533,
+   "scale": 1.0032
+  }
+ }
+}
