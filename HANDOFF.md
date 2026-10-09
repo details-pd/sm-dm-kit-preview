@@ -71,7 +71,12 @@ Geometry was verified by measurement, not by eye. Do not re-derive it.
    the `webapp` block (restore from git and re-push before deploying), and
    `clasp pull` writes a duplicate Code.js beside Code.gs that breaks the next
    push (delete it).
-5. **No remote yet.** Needs a GitHub repo and Pages.
+5. ~~No remote yet.~~ **DONE Oct 9.** `github.com/details-pd/sm-dm-kit-preview`
+   (public; GitHub refused Pages on a private repo on this plan). Staging:
+   https://details-pd.github.io/sm-dm-kit-preview/ . Deploys on every push to
+   main via `.github/workflows/pages.yml`. No CNAME on purpose. The repo holds
+   the children's faces and birth years; move it behind a custom host if that
+   matters before sharing wider. Live config.js confirmed free of Jonny's endpoint.
 
 ## Conventions worth keeping
 
