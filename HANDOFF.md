@@ -47,9 +47,11 @@ Geometry was verified by measurement, not by eye. Do not re-derive it.
 2. **Gift card art** still points at the Jonny files. Artboards 4 and 5 need
    running through `tools/extract-gift-cards.py`. Kharisel says The Next Lap's
    front may be re-exported once the gift is locked.
-3. **Gift descriptions.** The design reuses Jonny's wording for Memory Lane and
-   The Pit Stop; the creative deck has different copy. Live text, so a one-line
-   change either way. Awaiting Kharisel.
+3. ~~Gift descriptions.~~ **RESOLVED Oct 9.** Kharisel: slide 11's copy is in
+   the deck's speaker notes, slide 12's is in the Illustrator file. So the .ai
+   is authoritative for gift copy and the deck's section 01 lines were gift
+   IDEATION, not website copy. The landing copy in the speaker notes was diffed
+   against `config.js` and matches exactly. Nothing to change.
 4. **Notifier** still points at the Jonny deployment, which emails details@ and
    Sarah on every real POST. Repoint before anything is submitted.
 5. **No remote yet.** Needs a GitHub repo and Pages.
