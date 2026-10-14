@@ -74,7 +74,11 @@ h1, h2, h3, h4, .btn {
 }
 .intro-card h1 {
   font-weight: 800;
-  font-size: clamp(1.7rem, 5vh, 2.5rem);
+  /* The height-based size on the left is the original. The width cap on the
+     right keeps "Endless adventures." on one line: it needs 363px at 40px and
+     the card column is only (viewport - ~99px), so on a phone the headline
+     scales down instead of splitting "Endless" from "adventures." (Oct 14). */
+  font-size: min(clamp(1.7rem, 5vh, 2.5rem), calc((100vw - 105px) * 0.108));
   line-height: 1.05;
   color: var(--ink);
   margin-bottom: 0.7em;

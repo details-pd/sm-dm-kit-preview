@@ -30,7 +30,9 @@ const KIT = {
 
   copy: {
     pageTitle: "Congratulations, Stephanie and Jesse!",
-    introHeadline: "Growing crew. Endless adventures.",
+    // break after the first sentence so "Endless adventures." stays together on
+    // one line, as in the design (Kharisel/Waheed, Oct 14)
+    introHeadline: "Growing crew.<br>Endless adventures.",
     // Kharisel's Oct 9 landing letter — one entry per paragraph
     introBody: [
       "Stephanie and Jesse,",
