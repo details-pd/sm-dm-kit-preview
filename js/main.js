@@ -728,6 +728,26 @@ function onSlotClick(i) {
    "Click for a surprise" pill (Waheed, Aug 19). */
 let surpriseShown = false;
 
+/* Framing for the very last beat. Normally it is the family AND the button
+   together, as before. But a family of four plus the button is wider than a
+   phone shows at the locked zoom (0.71 of the board against 0.625), so
+   something has to give. Kharisel, Oct 14: "okay with clipping the game piece to
+   focus on the button". So when they do not both fit, line the camera up with
+   the BUTTON'S right edge (plus a little air) and let the family clip on the
+   left. When they do fit, nothing changes. */
+function frameEndBeat(end) {
+  const fam = pawnBox(end), ring = ringBox();
+  const S = KIT.board.surprise;
+  const hitR = (S.hit.x + S.hit.w) * BW;
+  const both = frameFor([fam, ring]);
+  const visW = vw() / both.s;
+  const unionW = Math.max(fam[2], ring[2], hitR) - Math.min(fam[0], ring[0]);
+  if (unionW <= visW * 0.96) return both;
+  const right = Math.max(ring[2], hitR) + 0.02 * visW;       // button, with air
+  const cy = (Math.min(fam[1], ring[1]) + Math.max(fam[3], ring[3])) / 2;
+  return camTargetFor(right - visW / 2, cy, both.s);
+}
+
 function finishJourney() {
   busy = true;
   const end = {
@@ -736,13 +756,16 @@ function finishJourney() {
   };
   walkPawnsTo(end, ringBox(), () => {
     busy = false;
-    armSurprise();
+    armSurprise();   // frames the button-first view itself
   });
 }
 
 function armSurprise() {
-  // hold the couple and the pill in one frame
-  cameraTo(frameActorAnd(ringBox()), 0.6, "power2.inOut");
+  // Hold the family and the button in one frame when they fit, and put the
+  // BUTTON first when they do not (a phone). This line used to frame "the couple
+  // and the pill" unconditionally, which quietly overrode any other end framing.
+  cameraTo(frameEndBeat({ x: KIT.board.endPos[0] * BW, y: KIT.board.endPos[1] * BH }),
+           0.6, "power2.inOut");
   surpriseHit.classList.add("on");
   gsap.killTweensOf(surpriseGlow);
   gsap.fromTo(surpriseGlow,

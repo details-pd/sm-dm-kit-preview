@@ -70,18 +70,22 @@ Geometry was verified by measurement, not by eye. Do not re-derive it.
    right half of the baked "From The Pixel Dreams Team" sign-off at the bottom
    left. HTTPS: certificate approved and enforced, so no more "unsecured" popup.
 
-2b. **OPEN, needs a design call: the end of the board on a PHONE.** The last
-   card (x 0.531-0.728) and the pill's hit box (from x 0.706) overlap, so there
-   is no gap between them for a four-head family. `endPos` is now the furthest
-   point that clears BOTH, which is correct on desktop (nothing clipped, card
-   and pill fully visible). On a 375px phone the family and the pill cannot both
-   fit: the zoom is locked after the intro, so a phone sees 0.625 of the board
-   and this pairing needs 0.71. Result is ~26px of Stephanie's hair clipped left
-   and ~33px of the pill clipped right; the pill is still mostly visible and
-   tappable and the card is fully readable. Every alternative measured was worse
-   (62% to 100% of the last card's TITLE covered). Real fixes, both needing a
-   decision: Kharisel moves the pill or the last card, or we allow a single
-   zoom-out for this final beat only.
+2b. ~~End of the board on a phone.~~ **DECIDED Oct 14 (Kharisel): clip the family,
+   keep the button.** The last card and the pill's hit box overlap, so a family of
+   four cannot share a phone screen with the button at the locked zoom. New
+   `frameEndBeat()` in main.js frames both when they fit (desktop) and otherwise
+   lines the camera up with the BUTTON's right edge plus a little air, letting the
+   family clip on the left. On a 375px phone the button now shows fully (0px
+   clipped) and ~67px of the family is cut (was ~26px of the family and ~33px of
+   the button). Gotcha that cost an attempt: `armSurprise()` used to re-frame "the
+   couple and the pill" itself, silently overriding any other end framing, so the
+   fix lives there. It is also called when she backs out of the gift screen.
+2c. **End position vs the footer, DONE Oct 14 (Kharisel).** The boys were covering
+   the baked "From The Pixel Dreams Team" sign-off (bar at x 0.040-0.407, y
+   0.969-0.976). `endPos` y 0.892 -> 0.852, solved against the footer, pill, last
+   card, every other card and the board edge: 133px higher and clean on all of
+   them. Verified by screenshot on desktop (sign-off fully readable, nothing
+   clipped) and by clipping numbers on desktop and a 375px phone.
 
 3. **Unique URL: set up Oct 14, WAITING ON DNS.** `stephanieandjesse.pixeldreams.com`,
    same pattern as Jonny's. Done: `CNAME` file (b3c6b83) and the custom domain set on

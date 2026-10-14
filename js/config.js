@@ -95,7 +95,11 @@ const KIT = {
     // alternative is worse: standing where both fit covers 62-100% of the last
     // card's title. The real fixes are art (move the pill or the last card) or
     // allowing one zoom-out for this final beat.
-    endPos: [0.3880, 0.8920],
+    // Oct 14 PM: y 0.892 -> 0.852 so the family stops clear of the baked "From The
+    // Pixel Dreams Team" sign-off (bar at x 0.040-0.407, y 0.969-0.976). Solved
+    // against the footer, the pill, the last card, every other card and the board
+    // edge: 133px higher than before and clean on all of them. Kharisel's call.
+    endPos: [0.3880, 0.8520],
 
     // "Start the Journey" is baked into the artboard where the family has to
     // stand, so build-board-v4.py lifts it out as a sprite and erases it from
