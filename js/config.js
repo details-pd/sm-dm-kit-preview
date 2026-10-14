@@ -124,12 +124,14 @@ const KIT = {
   // their milestone cards are flipped"). joinsAt is the milestone INDEX that
   // brings that pawn on; null means present from the start.
   // widthFrac = the sprite's native width / the 3876px board render, so the
-  // sticker lands at its designed size.
+  // sticker lands at its designed size. The sprites are cut from a TRUE-alpha
+  // render (tools/extract-heads.py) so the white sticker outline is intact; the
+  // flood-fill cut of Oct 9 had eaten most of it (Kharisel, Oct 14).
   pawns: [
-    { img: "assets/v3/head-steph.png?v=1",   alt: "", widthFrac: 0.1837, joinsAt: null },
-    { img: "assets/v3/head-jesse.png?v=1",   alt: "", widthFrac: 0.1486, joinsAt: null },
-    { img: "assets/v3/head-wesley.png?v=1",  alt: "", widthFrac: 0.1326, joinsAt: 1 },
-    { img: "assets/v3/head-bennett.png?v=1", alt: "", widthFrac: 0.1148, joinsAt: 2 },
+    { img: "assets/v3/head-steph.png?v=2",   alt: "", widthFrac: 0.1834, joinsAt: null },
+    { img: "assets/v3/head-jesse.png?v=2",   alt: "", widthFrac: 0.1486, joinsAt: null },
+    { img: "assets/v3/head-wesley.png?v=2",  alt: "", widthFrac: 0.1326, joinsAt: 1 },
+    { img: "assets/v3/head-bennett.png?v=2", alt: "", widthFrac: 0.1156, joinsAt: 2 },
   ],
   // gap between neighbours as a fraction of the two heads either side of it
   pawnSpread: 0.41,

@@ -33,6 +33,42 @@ Geometry was verified by measurement, not by eye. Do not re-derive it.
   that milestone is turned. Verified in-browser: 2 on the board at load, Wesley
   at milestone 1, Bennett at milestone 2.
 
+## Kharisel's Oct 14 feedback
+
+1. ~~All pieces need a white outline and must not look transparent.~~ **DONE.**
+   My Oct 9 flood-fill cut had removed 75 to 90% of each head's white outline
+   (the outline is white and so is the artboard) and left every edge hard.
+   Measured against a true-alpha render, white-outline px went 8,402 -> 40,989
+   (Steph), 6,961 -> 28,884 (Jesse), 4,495 -> 18,880 (Wesley), 1,805 -> 13,689
+   (Bennett), now exactly equal to the design. New `tools/extract-heads.py` cuts
+   heads from `pdftocairo -png -transp -r 144` output. Sizes barely moved, so
+   nothing shifts on the board. Cards were not touched: their outlines are black
+   so the flood never had this problem.
+2. **Wesley and Bennett: appear when Steph and Jesse have stopped on the card,
+   placed UNDER Steph and Jesse** so the group is not horizontally long and does
+   not cover the 3rd card or run off the artboard. **NOT DONE. This is Phase B and
+   it also resolves open item 1 (rest positions).** Spec:
+   - Two rows: Steph and Jesse on top, the boys beneath them, so the group is two
+     heads wide. At the old four-wide spread it was 0.50 of board width against a
+     0.20-wide card; it covered the "Double the Horsepower" title in the live game.
+   - Timing changes: today `revealJoiners(i)` fires in the turn's onComplete,
+     BEFORE the walk, so the boys travel with the adults. She wants them to
+     appear AFTER the adults have stopped on the card (walk-complete callback).
+     Check what a joiner does to `pawnBox()` and the camera box when it appears.
+   - Rest positions (`pawnPos` for milestones 1 to 3) need re-solving for the new
+     two-row footprint. Method that works: text zones as slot-rect fractions,
+     title (0.07,0.06,0.93,0.37) and caption (0.12,0.77,0.88,0.96), plus every
+     OTHER card's full rect, and the footprint must stay on the board. Last time
+     a solver passed those checks and still looked wrong, so check by screenshot.
+   - `pawnOffsets()` and `pawnBox()` in main.js currently lay heads in one row.
+3. **Unique URL like Jonny's.** Jonny's is `jonnyandkelly.pixeldreams.com`: a
+   `CNAME` file in the repo plus a DNS CNAME record to `details-pd.github.io`.
+   Stephanie's can match, for example `stephanieandjesse.pixeldreams.com`. Waheed
+   picks the name; whoever manages pixeldreams.com DNS adds the record; then add
+   the CNAME file. Not urgent: the github.io link works for review.
+4. **Headline wrap, DONE (Waheed):** "Endless adventures." stays on one line,
+   including on phones (width-capped font, checked at 320, 375, 414, 1280).
+
 ## Open
 
 1. **Pawn rest positions.** BLOCKING and it is a design call, not a bug.
