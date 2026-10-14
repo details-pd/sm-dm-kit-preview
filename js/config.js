@@ -75,10 +75,27 @@ const KIT = {
     // The red piece runs well past here, so dropping the anchor buys the
     // clearance without reopening the top gap Sarah asked to close (Aug 20).
     startPos: [0.740, 0.1100],
-    // where they end up after the last milestone: the second-to-last
-    // (black) piece, high enough that heads stay clear of the baked
-    // "Click for a surprise" pill below them.
-    endPos: [0.778, 0.8983],
+    // Where they end up after the last milestone, with the final blue piece
+    // pulsing under its baked "Click for a surprise" pill.
+    //
+    // A family of FOUR cannot stand on the second-to-last black piece the way
+    // Jonny's pair did. The group is 0.30 of the board wide and 0.175 tall; the
+    // last card spans x 0.531-0.728 and the pill's hit box starts at 0.706, so
+    // the card and the pill OVERLAP and there is no gap between them to stand
+    // in. The inherited anchor put the second row straight on top of the pill,
+    // the one thing Stephanie has to click.
+    //
+    // This anchor is the furthest point along the track that clears the pill
+    // AND the whole card, so nothing important is covered. Measured Oct 14.
+    //
+    // KNOWN, needs a design call: on a 375px phone the family and the pill
+    // cannot both fit. The zoom is locked after the intro ("one zoom for the
+    // whole game"), so a phone sees 0.625 of the board and this pairing needs
+    // 0.71, leaving ~26px of Stephanie's hair clipped at the left edge. Every
+    // alternative is worse: standing where both fit covers 62-100% of the last
+    // card's title. The real fixes are art (move the pill or the last card) or
+    // allowing one zoom-out for this final beat.
+    endPos: [0.3880, 0.9000],
 
     // "Start the Journey" is baked into the artboard where the family has to
     // stand, so build-board-v4.py lifts it out as a sprite and erases it from
@@ -118,23 +135,32 @@ const KIT = {
     ],
   },
 
-  // Game pieces (sticker heads). Stephanie and Jesse are on the board from
-  // the first frame; the boys join as their own milestones are turned
-  // (Kharisel, Oct 9: "Wesley and Bennett should appear on the board once
-  // their milestone cards are flipped"). joinsAt is the milestone INDEX that
-  // brings that pawn on; null means present from the start.
+  // Game pieces (sticker heads). Stephanie and Jesse are on the board from the
+  // first frame; the boys arrive with their own milestone (joinsAt is that
+  // milestone's INDEX, null means present from the start) and appear only once
+  // the parents have finished walking to the card, standing in row 1 beneath
+  // them (Kharisel, Oct 14).
+  //
+  // heightFrac is the sprite's real height / the 6626px padded board render, so
+  // the row drop and the camera box use true head heights instead of assuming
+  // every head is 1.25x as tall as it is wide (they run 1.12 to 1.34).
   // widthFrac = the sprite's native width / the 3876px board render, so the
   // sticker lands at its designed size. The sprites are cut from a TRUE-alpha
   // render (tools/extract-heads.py) so the white sticker outline is intact; the
   // flood-fill cut of Oct 9 had eaten most of it (Kharisel, Oct 14).
   pawns: [
-    { img: "assets/v3/head-steph.png?v=2",   alt: "", widthFrac: 0.1834, joinsAt: null },
-    { img: "assets/v3/head-jesse.png?v=2",   alt: "", widthFrac: 0.1486, joinsAt: null },
-    { img: "assets/v3/head-wesley.png?v=2",  alt: "", widthFrac: 0.1326, joinsAt: 1 },
-    { img: "assets/v3/head-bennett.png?v=2", alt: "", widthFrac: 0.1156, joinsAt: 2 },
+    { img: "assets/v3/head-steph.png?v=2",   alt: "", widthFrac: 0.1834, heightFrac: 0.1201, row: 0, joinsAt: null },
+    { img: "assets/v3/head-jesse.png?v=2",   alt: "", widthFrac: 0.1486, heightFrac: 0.1168, row: 0, joinsAt: null },
+    { img: "assets/v3/head-wesley.png?v=2",  alt: "", widthFrac: 0.1326, heightFrac: 0.0892, row: 1, joinsAt: 1 },
+    { img: "assets/v3/head-bennett.png?v=2", alt: "", widthFrac: 0.1156, heightFrac: 0.0803, row: 1, joinsAt: 2 },
   ],
-  // gap between neighbours as a fraction of the two heads either side of it
+  // gap between neighbours in a row, as a fraction of the two heads either side
   pawnSpread: 0.41,
+  // How far row 1 sits below row 0, as a fraction of the tallest row-0 head.
+  // The boys tuck under their parents rather than extending the line sideways:
+  // four in a row was half the board wide and covered the milestone card's
+  // title (Kharisel, Oct 14).
+  pawnRowDrop: 0.42,
 
   // the card art that replaces a year card when that milestone is next up
   clickCard: "assets/v4/card-clickme.png?v=1",
@@ -161,7 +187,9 @@ const KIT = {
       yearCard: "assets/v3/year-2021.png?v=1",
       alt: "Memory card: Rookie of the Year, 2021 — a wooden crib. Wesley joins the team. Hello, Mom and Dad!",
       slot: { cx: 0.6692, cy: 0.4110, w: 0.1977, h: 0.1508, angle: -0.80 },
-      pawnPos: [0.414, 0.4159],
+      // re-solved Oct 14 for the two-row family: the old spot sat on a
+      // neighbouring card once Wesley joined
+      pawnPos: [0.4400, 0.4490],
     },
     {
       id: "horsepower",
@@ -169,7 +197,9 @@ const KIT = {
       yearCard: "assets/v3/year-2023.png?v=1",
       alt: "Memory card: Double the Horsepower, 2023 — two car seats side by side. Bennett arrives, and Wesley gets a teammate for life.",
       slot: { cx: 0.3268, cy: 0.6281, w: 0.1977, h: 0.1508, angle: -1.85 },
-      pawnPos: [0.536, 0.6371],
+      // re-solved Oct 14: with all four on the board the old spot covered
+      // this card's title. Level with the card, clear of its text.
+      pawnPos: [0.5720, 0.6281],
     },
     {
       id: "backseat",

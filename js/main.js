@@ -99,7 +99,9 @@ function buildBoard() {
     img.src = p.img;
     img.alt = p.alt;
     img.style.width = p.widthFrac * BW + "px";
-    img.style.zIndex = 10 - i;
+    // row 1 sits in front, so the boys overlap their parents' chins rather
+    // than being hidden behind them
+    img.style.zIndex = 10 + (p.row || 0) * 10 - i;
     board.appendChild(img);
     // anchor low on the band so the heads read as standing ON the track
     gsap.set(img, { xPercent: -50, yPercent: -75 });
@@ -113,26 +115,41 @@ function buildBoard() {
    and they are called from buildBoard before that block is reached. */
 let drawn = 0;
 
-/* Who is on the board right now. A pawn with `joinsAt: n` walks on once
-   milestone n has been turned (`drawn` counts turned cards), which is how
-   Wesley and Bennett arrive with their own milestones rather than standing
-   there from the start. */
-const pawnIsOn = (p) => p.joinsAt == null || drawn > p.joinsAt;
+/* Who is on the board right now. A pawn with `joinsAt: n` appears once the
+   family has FINISHED walking to milestone n, so the child is introduced at
+   their own card rather than tagging along for the walk (Kharisel, Oct 14).
+   `joinedThrough` tracks that arrival; it deliberately lags `drawn`, which
+   counts cards the moment they are turned. */
+let joinedThrough = -1;
+const pawnIsOn = (p) => p.joinsAt == null || joinedThrough >= p.joinsAt;
 const activeIdx = () => KIT.pawns.reduce(
   (a, p, i) => (pawnIsOn(p) ? a.concat(i) : a), []);
 const pawnEls = () => activeIdx().map((i) => el(`pawn-${i}`));
 
-/* Offsets for the group, in board px, centred on the feet anchor. Each gap
-   is scaled by the two heads it sits between, so a toddler tucks in closer
-   than two adults do. For the two-pawn case this is identical to the old
-   fixed [-s, +s]. */
+/* Where each active pawn sits relative to the feet anchor, in board px.
+   Parents in row 0, children in row 1 beneath them. Rows are centred
+   independently so the group reads as a family group rather than a line: four
+   abreast was half the board wide and sat on the milestone card's title.
+   Within a row each gap is scaled by the two heads either side of it, so a
+   toddler tucks in closer than two adults do. For a single row of two this is
+   identical to the original fixed [-s, +s]. */
 function pawnOffsets(idx) {
   const s = KIT.pawnSpread;
-  const w = idx.map((i) => KIT.pawns[i].widthFrac * BW);
-  const xs = [0];
-  for (let k = 1; k < idx.length; k++) xs.push(xs[k - 1] + s * (w[k - 1] + w[k]));
-  const mid = (xs[0] + xs[xs.length - 1]) / 2;
-  return xs.map((x) => x - mid);
+  const rowOf = (i) => KIT.pawns[i].row || 0;
+  const rows = [...new Set(idx.map(rowOf))].sort((a, b) => a - b);
+  const topH = Math.max(...idx.filter((i) => rowOf(i) === rows[0])
+    .map((i) => KIT.pawns[i].heightFrac * BH));
+  const out = {};
+  rows.forEach((r) => {
+    const members = idx.filter((i) => rowOf(i) === r);
+    const w = members.map((i) => KIT.pawns[i].widthFrac * BW);
+    const xs = [0];
+    for (let k = 1; k < members.length; k++) xs.push(xs[k - 1] + s * (w[k - 1] + w[k]));
+    const mid = (xs[0] + xs[xs.length - 1]) / 2;
+    const dy = r === rows[0] ? 0 : KIT.pawnRowDrop * topH * r;
+    members.forEach((i, k) => { out[i] = { x: xs[k] - mid, y: dy }; });
+  });
+  return idx.map((i) => out[i]);
 }
 
 /* ================= track: Catmull-Rom through config waypoints ================= */
@@ -243,11 +260,17 @@ function frameBox(x0, y0, x1, y1) {
 function pawnBox(p) {
   const idx = activeIdx();
   const offs = pawnOffsets(idx);
-  const ws = idx.map((i) => KIT.pawns[i].widthFrac * BW);
-  const left = Math.min(...offs.map((o, k) => o - ws[k] / 2));
-  const right = Math.max(...offs.map((o, k) => o + ws[k] / 2));
-  const h = Math.max(...ws) * 1.25; // heads are ~1.25× as tall as they are wide
-  return [p.x + left, p.y - 0.85 * h, p.x + right, p.y + 0.25 * h];
+  // Each sprite is anchored xPercent -50 / yPercent -75, so it covers
+  // [x - w/2, x + w/2] by [y - 0.75h, y + 0.25h] around its own offset. The
+  // extra 0.10h on top is breathing room for the camera, not sprite.
+  let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
+  idx.forEach((i, k) => {
+    const w = KIT.pawns[i].widthFrac * BW;
+    const h = KIT.pawns[i].heightFrac * BH;
+    x0 = Math.min(x0, offs[k].x - w / 2); x1 = Math.max(x1, offs[k].x + w / 2);
+    y0 = Math.min(y0, offs[k].y - 0.85 * h); y1 = Math.max(y1, offs[k].y + 0.25 * h);
+  });
+  return [p.x + x0, p.y + y0, p.x + x1, p.y + y1];
 }
 
 function slotBox(slot) {
@@ -339,30 +362,35 @@ const startPoint = () => ({
 const currentPawnPoint = () => pawnPoint || startPoint();
 
 function renderPawnsAt(p) {
-  // Stephanie and Jesse from the first frame; Wesley and Bennett slot into
-  // the line as their milestones are turned (Kharisel, Oct 9).
   const idx = activeIdx();
   const offs = pawnOffsets(idx);
   idx.forEach((i, k) => {
     // transform, not left/top: those are layout properties and re-laid the
     // board out on every frame of every walk (Sarah: "laggy after clicks")
-    gsap.set(el(`pawn-${i}`), { x: p.x + offs[k], y: p.y });
+    gsap.set(el(`pawn-${i}`), { x: p.x + offs[k].x, y: p.y + offs[k].y });
   });
 }
 
 /* A child joining after their card is turned. Placed at the new group
    position first, then popped in, so they appear already standing in line
    rather than sliding across the board. */
-function revealJoiners(milestoneIdx) {
+function revealJoiners(milestoneIdx, onDone) {
+  joinedThrough = Math.max(joinedThrough, milestoneIdx);
   const joining = KIT.pawns
     .map((p, i) => (p.joinsAt === milestoneIdx ? i : -1))
     .filter((i) => i >= 0);
-  if (!joining.length) return;
-  positionPawns();
-  joining.forEach((i) => {
-    gsap.to(el(`pawn-${i}`), {
-      opacity: 1, scale: 1, duration: 0.42, ease: "back.out(2)",
-    });
+  if (!joining.length) { if (onDone) onDone(); return; }
+  positionPawns();   // lay the group out again, now including the newcomer
+  const keep = slotBox(KIT.milestones[milestoneIdx].slot);
+  gsap.to(joining.map((i) => el(`pawn-${i}`)), {
+    opacity: 1, scale: 1, duration: 0.42, ease: "back.out(2)",
+    onComplete: () => {
+      // the group just grew a row; pull back only if that pushed it out of
+      // shot, so an arrival that already fits costs no camera move
+      const boxes = [pawnBox(currentPawnPoint()), keep];
+      if (alreadyInView(boxes)) { if (onDone) onDone(); }
+      else cameraTo(frameFor(boxes), 0.4, "power1.out", onDone);
+    },
   });
 }
 function positionPawns() { renderPawnsAt(currentPawnPoint()); }
@@ -667,17 +695,18 @@ function onSlotClick(i) {
   gsap.timeline({
     onComplete: () => {
       drawn += 1;
-      // a child named by this milestone joins the line before the walk, so
-      // they travel to the card with everyone else
-      revealJoiners(i);
       // keep the card they just turned fully in shot for the whole walk
       walkPawnsTo(milestoneAnchor(i), slotBox(m.slot), () => {
-        busy = false;
-        if (i + 1 < KIT.milestones.length) {
-          gsap.delayedCall(KIT.timing.nextPrompt, () => inviteMilestone(i + 1));
-        } else {
-          finishJourney();
-        }
+        // the child this milestone is about steps in beneath their parents
+        // once the parents have arrived, not before (Kharisel, Oct 14)
+        revealJoiners(i, () => {
+          busy = false;
+          if (i + 1 < KIT.milestones.length) {
+            gsap.delayedCall(KIT.timing.nextPrompt, () => inviteMilestone(i + 1));
+          } else {
+            finishJourney();
+          }
+        });
       });
     },
   })

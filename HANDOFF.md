@@ -44,23 +44,33 @@ Geometry was verified by measurement, not by eye. Do not re-derive it.
    heads from `pdftocairo -png -transp -r 144` output. Sizes barely moved, so
    nothing shifts on the board. Cards were not touched: their outlines are black
    so the flood never had this problem.
-2. **Wesley and Bennett: appear when Steph and Jesse have stopped on the card,
-   placed UNDER Steph and Jesse** so the group is not horizontally long and does
-   not cover the 3rd card or run off the artboard. **NOT DONE. This is Phase B and
-   it also resolves open item 1 (rest positions).** Spec:
-   - Two rows: Steph and Jesse on top, the boys beneath them, so the group is two
-     heads wide. At the old four-wide spread it was 0.50 of board width against a
-     0.20-wide card; it covered the "Double the Horsepower" title in the live game.
-   - Timing changes: today `revealJoiners(i)` fires in the turn's onComplete,
-     BEFORE the walk, so the boys travel with the adults. She wants them to
-     appear AFTER the adults have stopped on the card (walk-complete callback).
-     Check what a joiner does to `pawnBox()` and the camera box when it appears.
-   - Rest positions (`pawnPos` for milestones 1 to 3) need re-solving for the new
-     two-row footprint. Method that works: text zones as slot-rect fractions,
-     title (0.07,0.06,0.93,0.37) and caption (0.12,0.77,0.88,0.96), plus every
-     OTHER card's full rect, and the footprint must stay on the board. Last time
-     a solver passed those checks and still looked wrong, so check by screenshot.
-   - `pawnOffsets()` and `pawnBox()` in main.js currently lay heads in one row.
+2. ~~Wesley and Bennett under their parents.~~ **DONE Oct 14.** Pawns take a
+   `row`; rows are centred independently and row 1 drops by `pawnRowDrop` (0.42)
+   of the tallest row-0 head, with row 1 given a higher z-index so the boys
+   overlap their parents. Group width fell from 0.502 to 0.302 of the board.
+   `joinedThrough` replaced `drawn` for pawn visibility so a child appears only
+   after the parents finish walking, and the reveal re-frames only if the taller
+   group fell out of shot. Rest positions for milestones 1 and 2 were re-solved
+   (M1 and M4 were already clear).
+   Two things worth knowing for next time: `TRACK.nearestT` returns a NORMALISED
+   0-1 value, not arc length, so an earlier constraint written as a fraction of
+   `TRACK.total` silently did nothing; and a solver that only protects the
+   caption will happily park the family on the title, which is what it did.
+   Verified by screenshot at each stop, not just by the numbers.
+
+2b. **OPEN, needs a design call: the end of the board on a PHONE.** The last
+   card (x 0.531-0.728) and the pill's hit box (from x 0.706) overlap, so there
+   is no gap between them for a four-head family. `endPos` is now the furthest
+   point that clears BOTH, which is correct on desktop (nothing clipped, card
+   and pill fully visible). On a 375px phone the family and the pill cannot both
+   fit: the zoom is locked after the intro, so a phone sees 0.625 of the board
+   and this pairing needs 0.71. Result is ~26px of Stephanie's hair clipped left
+   and ~33px of the pill clipped right; the pill is still mostly visible and
+   tappable and the card is fully readable. Every alternative measured was worse
+   (62% to 100% of the last card's TITLE covered). Real fixes, both needing a
+   decision: Kharisel moves the pill or the last card, or we allow a single
+   zoom-out for this final beat only.
+
 3. **Unique URL like Jonny's.** Jonny's is `jonnyandkelly.pixeldreams.com`: a
    `CNAME` file in the repo plus a DNS CNAME record to `details-pd.github.io`.
    Stephanie's can match, for example `stephanieandjesse.pixeldreams.com`. Waheed
