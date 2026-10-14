@@ -71,11 +71,15 @@ Geometry was verified by measurement, not by eye. Do not re-derive it.
    decision: Kharisel moves the pill or the last card, or we allow a single
    zoom-out for this final beat only.
 
-3. **Unique URL like Jonny's.** Jonny's is `jonnyandkelly.pixeldreams.com`: a
-   `CNAME` file in the repo plus a DNS CNAME record to `details-pd.github.io`.
-   Stephanie's can match, for example `stephanieandjesse.pixeldreams.com`. Waheed
-   picks the name; whoever manages pixeldreams.com DNS adds the record; then add
-   the CNAME file. Not urgent: the github.io link works for review.
+3. **Unique URL: set up Oct 14, WAITING ON DNS.** `stephanieandjesse.pixeldreams.com`,
+   same pattern as Jonny's. Done: `CNAME` file (b3c6b83) and the custom domain set on
+   the repo's Pages site. NOT done: the DNS record, `CNAME stephanieandjesse ->
+   details-pd.github.io`, which Waheed adds. Until it exists the old
+   `details-pd.github.io/sm-dm-kit-preview` link redirects to a domain that does not
+   resolve (remove the domain with `gh api -X DELETE repos/details-pd/sm-dm-kit-preview/pages`
+   style change if that has to wait). After DNS propagates: enforce HTTPS with
+   `gh api -X PUT repos/details-pd/sm-dm-kit-preview/pages -F https_enforced=true`
+   (GitHub refuses until the cert is issued) and confirm the page loads.
 4. **Headline wrap, DONE (Waheed):** "Endless adventures." stays on one line,
    including on phones (width-capped font, checked at 320, 375, 414, 1280).
 
