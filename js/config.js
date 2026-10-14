@@ -95,7 +95,7 @@ const KIT = {
     // alternative is worse: standing where both fit covers 62-100% of the last
     // card's title. The real fixes are art (move the pill or the last card) or
     // allowing one zoom-out for this final beat.
-    endPos: [0.3880, 0.9000],
+    endPos: [0.3880, 0.8920],
 
     // "Start the Journey" is baked into the artboard where the family has to
     // stand, so build-board-v4.py lifts it out as a sprite and erases it from
@@ -160,7 +160,10 @@ const KIT = {
   // The boys tuck under their parents rather than extending the line sideways:
   // four in a row was half the board wide and covered the milestone card's
   // title (Kharisel, Oct 14).
-  pawnRowDrop: 0.42,
+  // Raised from 0.42 after Kharisel's Oct 14 review: at 0.42 the boys sat over
+  // their parents' faces. 0.70 puts the top of their heads near the parents'
+  // chins, at the cost of a taller group (re-checked at every stop).
+  pawnRowDrop: 0.70,
 
   // the card art that replaces a year card when that milestone is next up
   clickCard: "assets/v4/card-clickme.png?v=1",
@@ -188,8 +191,9 @@ const KIT = {
       alt: "Memory card: Rookie of the Year, 2021 — a wooden crib. Wesley joins the team. Hello, Mom and Dad!",
       slot: { cx: 0.6692, cy: 0.4110, w: 0.1977, h: 0.1508, angle: -0.80 },
       // re-solved Oct 14 for the two-row family: the old spot sat on a
-      // neighbouring card once Wesley joined
-      pawnPos: [0.4400, 0.4490],
+      // neighbouring card once Wesley joined; nudged again for the deeper row
+      // drop (0.449 -> 0.445, clears the card above by a hair)
+      pawnPos: [0.4400, 0.4450],
     },
     {
       id: "horsepower",

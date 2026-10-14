@@ -58,6 +58,18 @@ Geometry was verified by measurement, not by eye. Do not re-derive it.
    caption will happily park the family on the title, which is what it did.
    Verified by screenshot at each stop, not just by the numbers.
 
+2a. **Oct 14 PM, Kharisel's round 2: boys lower, DONE.** `pawnRowDrop` 0.42 -> 0.70
+   so the boys' heads sit near their parents' chins instead of over their faces.
+   The group is taller (0.208 of the board high at three or four heads, was 0.132
+   at two), so rest positions were re-checked at all four stops: stops 1, 3 and 4
+   unchanged and clear; the rookie stop nudged 0.449 -> 0.445 (it was touching the
+   card above); `endPos` y 0.900 -> 0.892 because the taller group ran off the
+   bottom of the board. Verified by screenshot at three stops and by clipping
+   numbers on desktop and a 375px phone. Covering the dog at the second stop is
+   fine per Kharisel. **Cost to know about:** at the very end the boys cover the
+   right half of the baked "From The Pixel Dreams Team" sign-off at the bottom
+   left. HTTPS: certificate approved and enforced, so no more "unsecured" popup.
+
 2b. **OPEN, needs a design call: the end of the board on a PHONE.** The last
    card (x 0.531-0.728) and the pill's hit box (from x 0.706) overlap, so there
    is no gap between them for a four-head family. `endPos` is now the furthest
