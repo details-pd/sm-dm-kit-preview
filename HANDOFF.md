@@ -124,18 +124,17 @@ Geometry was verified by measurement, not by eye. Do not re-derive it.
    is authoritative for gift copy and the deck's section 01 lines were gift
    IDEATION, not website copy. The landing copy in the speaker notes was diffed
    against `config.js` and matches exactly. Nothing to change.
-4. **Notifier: deployed, awaiting ONE click from Waheed.** New project
+4. ~~Notifier.~~ **LIVE Oct 19 (Waheed signed off).** Project
    `apps-script-backups/stephanie-miller-claim-notifier`, deployment
-   `AKfycbxGjdsl...VdIDTpeSdwQ` @1. The site now points at it, and no trace of
-   the Jonny endpoint remains. It returns 403 until the owner opens the project
-   in the Apps Script editor, runs any function, and approves Review permissions.
-   Recipients are `details@` only. Add Kharisel for testing and Calvin at go-live
-   (Calvin Sribniak-Jones, navigate@pixeldreams.com per the kickoff notes; NOT
-   added without being asked). Test with GET only, since a real POST emails a fake
-   claim to every recipient. Redeploy with `clasp deploy -i <id>` to keep the URL.
-   Gotchas: `clasp create` overwrites appsscript.json with a default that drops
-   the `webapp` block (restore from git and re-push before deploying), and
-   `clasp pull` writes a duplicate Code.js beside Code.gs that breaks the next
+   `AKfycbxGjdsl...VdIDTpeSdwQ` now at **@2**. Recipients: `details@` and
+   `navigate@pixeldreams.com` (Calvin Sribniak-Jones, account owner). Waheed did a
+   real test submit BEFORE Calvin was added, so he did not receive a fake claim.
+   The site's endpoint is unchanged (same deployment ID). Verified with GET only;
+   NEVER POST to test, a real POST emails everyone on the list. To change
+   recipients: edit RECIPIENTS in Code.gs, `clasp push -f`, then
+   `clasp deploy -i <that id> -d "..."` to keep the URL.
+   Gotchas: `clasp create` overwrites appsscript.json with a default that drops the
+   `webapp` block, and `clasp pull` writes a duplicate Code.js that breaks the next
    push (delete it).
 5. ~~No remote yet.~~ **DONE Oct 9.** `github.com/details-pd/sm-dm-kit-preview`
    (public; GitHub refused Pages on a private repo on this plan). Staging:
